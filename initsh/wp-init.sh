@@ -13,6 +13,28 @@ git pull origin master && git submodule update --init --recursive
 git submodule status
 sleep 1
 
+echo "Adding .gitignore rules for Wordpress..."
+echo "
+
+# Wordpress ignores
+*.log
+.htaccess
+sitemap.xml
+sitemap.xml.gz
+wp-config.php
+wp-content/advanced-cache.php
+wp-content/backup-db/
+wp-content/backups/
+wp-content/blogs.dir/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/uploads/
+wp-content/wp-cache-config.php 
+
+" >> .gitignore
+echo "Rules written to .gitignore."
+sleep 1
+
 echo "Copy git-deploy-php to root folder..."
 cp deploy/git-deploy-php/git-deploy .
 cp deploy/git-deploy-php/deploy.ini .
@@ -26,3 +48,4 @@ chmod +x syncdb
 echo "Copy complete. Read deploy/SyncDB/README.md for further setup & usage instructions."
 echo "*** Configure 'syncdb-config' file to finish setting up SyncDB ***"
 sleep 1
+
