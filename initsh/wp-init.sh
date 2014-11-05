@@ -13,26 +13,13 @@ git pull origin master && git submodule update --init --recursive
 git submodule status
 sleep 1
 
-echo "Adding .gitignore rules for Wordpress..."
-echo "
-
-# Wordpress ignores
-*.log
-.htaccess
-sitemap.xml
-sitemap.xml.gz
-wp-config.php
-wp-content/advanced-cache.php
-wp-content/backup-db/
-wp-content/backups/
-wp-content/blogs.dir/
-wp-content/cache/
-wp-content/upgrade/
-wp-content/uploads/
-wp-content/wp-cache-config.php 
-
-" >> .gitignore
-echo "Rules written to .gitignore."
+echo "Setting up custom wp-config files..."
+git remote add wp-config https://github.com/studio24/wordpress-multi-env-config
+git remote update
+git fetch && git fetch --tags
+mv wp-config.php 
+git merge wp-config/master
+echo "Done. Read README.md for further instructions to configure the database settings for each environment."
 sleep 1
 
 echo "Copy git-deploy-php to root folder..."
@@ -49,3 +36,31 @@ echo "Copy complete. Read deploy/SyncDB/README.md for further setup & usage inst
 echo "*** Configure 'syncdb-config' file to finish setting up SyncDB ***"
 sleep 1
 
+echo "Adding .gitignore rules for Wordpress..."
+echo "
+
+### WORDPRESS IGNORES
+*.log
+.htaccess
+sitemap.xml
+sitemap.xml.gz
+
+### Leave this out if using custom wp-config files
+# wp-config.php
+
+wp-content/advanced-cache.php
+wp-content/backup-db/
+wp-content/backups/
+wp-content/blogs.dir/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/uploads/
+wp-content/wp-cache-config.php
+
+# WORDPRESS CUSTOM WP-CONFIG FILES
+wp-config.staging.php
+wp-config.development.php
+
+" >> .gitignore
+echo "Rules written to .gitignore."
+sleep 1
