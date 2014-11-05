@@ -1,4 +1,6 @@
 #!/bin/bash
+cd ..
+
 echo "Creating development branch..."
 git checkout -b 'dev'
 
