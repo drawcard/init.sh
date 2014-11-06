@@ -20,20 +20,20 @@ git submodule add https://github.com/jplew/SyncDB deploy/SyncDB
 git submodule add https://github.com/drawcard/roots-sass-dc wp-content/themes/build 
 
 echo "Pull from repo and fetch latest submodules..."
-echo "Committing changes..."
 git add .
-git commit -m "[wp-init.sh] Added submodules"
-git pull origin master && git submodule update --init --recursive
+git commit -m "[wp-init.sh] Modified .gitmodules"
+git submodule update --init --recursive
 git submodule status
+git add .
+git commit -m "[wp-init.sh] Committed submodules"
 sleep 1
 
 echo "Setting up custom wp-config files..."
 git remote add wp-config https://github.com/studio24/wordpress-multi-env-config
 git remote update
 git fetch wp-config && git fetch wp-config --tags
-mv wp-config.php wp-config-original.php
-echo "Committing changes..."
 
+mv wp-config.php wp-config-original.php
 git add .
 git commit -m "[wp-init.sh] Original wp-config.php file is now wp-config-original.php"
 git merge wp-config/master
@@ -50,6 +50,8 @@ echo "Copy db-sync to root folder..."
 cp deploy/SyncDB/syncdb .
 cp deploy/SyncDB/syncdb-config .
 chmod +x syncdb
+git add .
+git commit -m "[wp-init.sh] Deployment scripts set up"
 echo "Copy complete. Read deploy/SyncDB/README.md for further setup & usage instructions."
 echo "*** Configure 'syncdb-config' file to finish setting up SyncDB ***"
 sleep 1
@@ -87,15 +89,17 @@ initsh/
 
 ##### End wp-init.sh additions
 " >> .gitignore
-git rm -rf --cached initsh/
+
 echo "Rules written to .gitignore. and initsh/ folder is now untracked & ignored." 
 echo "Be sure to read .gitignore and customise as you need before your first commit."
 sleep 1
 
-echo "Committing final changes..."
 git add .
 git commit -m "[wp-init.sh] Finished setup"
 sleep 1
 
 echo "DONE!"
-echo "Now that setup has finished, be sure to remove the initsh/ folder."
+echo "*****"
+echo "Now that setup has finished, be sure to untrack and remove the initsh/ folder with the following command:"
+echo "git rm -rf --cached initsh/"
+echo "*****"
