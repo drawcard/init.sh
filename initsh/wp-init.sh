@@ -1,4 +1,14 @@
 #!/bin/bash
+
+# Helps to check errors in the script
+set -u
+
+echo "Welcome to the wp-init.sh script."
+echo "This script will commit changes along the way to prevent merge conflicts."
+echo "This script will begin in 5 seconds. Press ^-C to abort....."
+sleep 5
+echo "Script started."
+
 cd ..
 
 echo "Creating development branch..."
@@ -7,10 +17,12 @@ git checkout -b 'dev'
 echo "Adding submodules..."
 git submodule add https://github.com/BrunoDeBarros/git-deploy-php deploy/git-deploy-php
 git submodule add https://github.com/jplew/SyncDB deploy/SyncDB
-
 git submodule add https://github.com/drawcard/roots-sass-dc wp-content/themes/build 
 
 echo "Pull from repo and fetch latest submodules..."
+echo "Committing changes..."
+git add .
+git commit -m "[wp-init.sh] Added submodules"
 git pull origin master && git submodule update --init --recursive
 git submodule status
 sleep 1
@@ -18,8 +30,12 @@ sleep 1
 echo "Setting up custom wp-config files..."
 git remote add wp-config https://github.com/studio24/wordpress-multi-env-config
 git remote update
-git fetch && git fetch --tags
-mv wp-config.php 
+git fetch wp-config && git fetch wp-config --tags
+mv wp-config.php wp-config-original.php
+echo "Committing changes..."
+
+git add .
+git commit -m "[wp-init.sh] Original wp-config.php file is now wp-config-original.php"
 git merge wp-config/master
 echo "Done. Read README.md for further instructions to configure the database settings for each environment."
 sleep 1
@@ -40,7 +56,7 @@ sleep 1
 
 echo "Adding .gitignore rules for Wordpress..."
 echo "
-
+##### Added by wp-init.sh script
 ### WORDPRESS IGNORES
 *.log
 .htaccess
@@ -66,7 +82,20 @@ wp-content/wp-cache-config.php
 # wp-config.staging.php
 # wp-config.development.php
 
+### IGNORE INIT.SH FOLDER
+initsh/
+
+##### End wp-init.sh additions
 " >> .gitignore
-echo "Rules written to .gitignore." 
+git rm -rf --cached initsh/
+echo "Rules written to .gitignore. and initsh/ folder is now untracked & ignored." 
 echo "Be sure to read .gitignore and customise as you need before your first commit."
 sleep 1
+
+echo "Committing final changes..."
+git add .
+git commit -m "[wp-init.sh] Finished setup"
+sleep 1
+
+echo "DONE!"
+echo "Now that setup has finished, be sure to remove the initsh/ folder."
