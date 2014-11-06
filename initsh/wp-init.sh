@@ -47,7 +47,7 @@ echo "
 sitemap.xml
 sitemap.xml.gz
 
-### Leave this out if using custom wp-config files
+### Leave this commented out if using custom wp-config files
 # wp-config.php
 
 wp-content/advanced-cache.php
@@ -59,10 +59,14 @@ wp-content/upgrade/
 wp-content/uploads/
 wp-content/wp-cache-config.php
 
-# WORDPRESS CUSTOM WP-CONFIG FILES
-wp-config.staging.php
-wp-config.development.php
+### WORDPRESS CUSTOM WP-CONFIG FILES
+### Uncomment these if you don't want staging / dev DB details to be copied to the production server.
+### Useful if you are making your project available to the public.
+
+# wp-config.staging.php
+# wp-config.development.php
 
 " >> .gitignore
-echo "Rules written to .gitignore."
+echo "Rules written to .gitignore." 
+echo "Be sure to read .gitignore and customise as you need before your first commit."
 sleep 1
