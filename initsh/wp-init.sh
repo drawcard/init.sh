@@ -87,8 +87,8 @@ initsh/
 
 ##### End wp-init.sh additions
 " >> .gitignore
-git rm -rf --cached initsh/
-echo "Rules written to .gitignore. and initsh/ folder is now untracked & ignored." 
+
+echo "Rules written to .gitignore." 
 echo "Be sure to read .gitignore and customise as you need before your first commit."
 sleep 1
 
@@ -98,4 +98,7 @@ git commit -m "[wp-init.sh] Finished setup"
 sleep 1
 
 echo "DONE!"
-echo "Now that setup has finished, be sure to remove the initsh/ folder."
+echo "*****"
+echo "Now that setup has finished, be sure to untrack and remove the initsh/ folder with the following command:"
+echo "git rm -rf --cached initsh/"
+echo "*****"
